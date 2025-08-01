@@ -1,31 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import homeImage from '../assets/homeImage.png'
-import homeImage2 from '../assets/homeImage2.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function Navbar() {
-  const logoRef = useRef(null)
   const navbarRef = useRef(null)
   const [hoveredLink, setHoveredLink] = useState(null)
+  const [isVisible, setIsVisible] = useState(true)
+  const lastScrollY = useRef(0)
 
   useEffect(() => {
-    const logo = logoRef.current
     const navbar = navbarRef.current
 
-    if (!logo || !navbar) return
+    if (!navbar) return
 
-    gsap.set(logo, {
-      fontSize: '16rem',
-      position: 'fixed',
-      top: '20vh',
-      left: '50%',
-      xPercent: -50,
-      zIndex: 100
-    })
+    // Navbar visibility logic
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        // Scrolling down and past 100px
+        setIsVisible(false)
+      } else {
+        // Scrolling up
+        setIsVisible(true)
+      }
+      
+      lastScrollY.current = currentScrollY
+    }
 
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    // Navbar background animation
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: document.body,
@@ -43,15 +50,8 @@ function Navbar() {
       }
     })
 
-    tl.to(logo, {
-      fontSize: '2rem',
-      top: '0.5rem',
-      left: '2rem',
-      xPercent: 0,
-      duration: 1
-    })
-
     return () => {
+      window.removeEventListener('scroll', handleScroll)
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
   }, [])
@@ -64,58 +64,34 @@ function Navbar() {
   ]
 
   return (
-    <>
-      <nav 
-        ref={navbarRef}
-        className="fixed top-0 left-0 right-0 z-50 h-16 bg-white/0 backdrop-blur-0 transition-all duration-300"
-        style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.1)' }}
-      >
-        <div style={{padding:"30px"}} className="flex items-center justify-center h-full">
-          <ul className="flex space-x-8 gap-12 text-[#FEFCDA] font-bold">
-            {navLinks.map((link) => (
-              <li key={link.id}>
-                <a 
-                  href={link.href} 
-                  className={`transition-all duration-300 ${
-                    hoveredLink && hoveredLink !== link.id 
-                      ? 'opacity-20' 
-                      : 'opacity-100'
-                  } hover:opacity-100 hover:scale-105`}
-                  onMouseEnter={() => setHoveredLink(link.id)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                >
-                  {link.text}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
-
-      <div 
-        ref={logoRef}
-        className="text-[#C72A01] font-bold select-none"
-      >
-        SUMMOR.
+    <nav 
+      ref={navbarRef}
+      className={`fixed top-0 left-0 right-0 z-50 h-16 bg-white/0 backdrop-blur-0 transition-all duration-300 ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+      style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.1)' }}
+    >
+      <div style={{padding:"30px"}} className="flex items-center justify-center h-full">
+        <ul className="flex space-x-8 gap-12 text-[#FEFCDA] font-bold">
+          {navLinks.map((link) => (
+            <li key={link.id}>
+              <a 
+                href={link.href} 
+                className={`transition-all duration-300 ${
+                  hoveredLink && hoveredLink !== link.id 
+                    ? 'opacity-20' 
+                    : 'opacity-100'
+                } hover:opacity-100 hover:scale-105`}
+                onMouseEnter={() => setHoveredLink(link.id)}
+                onMouseLeave={() => setHoveredLink(null)}
+              >
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-        
-      <div className="pt-16">
-        <div 
-          className="h-screen flex items-center justify-center relative"
-          style={{
-            backgroundImage: `url(${homeImage2})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
-        >
-          <div className="absolute inset-0 bg-black/20"></div>
-          
-        </div>
-        <div style={{marginTop:"50px"}} className="redLine h-[2px] w-full bg-[#C72A01]"></div>
-        
-      </div>
-    </>
+    </nav>
   )
 }
 

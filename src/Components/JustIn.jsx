@@ -1,113 +1,125 @@
 import React, { useState, useEffect } from 'react'
 
 function JustIn() {
-  const [upholsteryItems, setUpholsteryItems] = useState([
-    {
-      id: 1,
-      name: 'Nina',
-      items: 5,
-      image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=200&fit=crop',
-      description: 'Modern sofa with textured fabric'
-    },
-    {
-      id: 2,
-      name: 'Jelly Roll',
-      items: 5,
-      image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=300&h=200&fit=crop',
-      description: 'Curved armchair with soft upholstery'
-    },
-    {
-      id: 3,
-      name: 'T-Bone',
-      items: 10,
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=200&fit=crop',
-      description: 'Minimalist sofa with clean lines'
-    },
-    {
-      id: 4,
-      name: 'Rollins',
-      items: 6,
-      image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=200&fit=crop',
-      description: 'Contemporary sofa with unique design'
-    },
-    {
-      id: 5,
-      name: 'Vintage',
-      items: 8,
-      image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=300&h=200&fit=crop',
-      description: 'Classic armchair with timeless appeal'
-    },
-    {
-      id: 6,
-      name: 'Modern',
-      items: 12,
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=200&fit=crop',
-      description: 'Sleek contemporary design'
-    }
-  ])
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Function to fetch data from API (replace with your actual API endpoint)
-  const fetchUpholsteryData = async () => {
+  // Simple function to fetch furniture products
+  const fetchProducts = async () => {
     try {
-      // Replace this with your actual API call
-      // const response = await fetch('your-api-endpoint/upholstery')
-      // const data = await response.json()
-      // setUpholsteryItems(data)
-      console.log('API call would be made here')
+      setLoading(true)
+      
+      // Fetch all products from DummyJSON API
+      const response = await fetch('https://dummyjson.com/products?limit=100')
+      const data = await response.json()
+      
+      // Simple filter for furniture items
+      const furnitureProducts = data.products.filter(product => {
+        const category = product.category.toLowerCase()
+        const title = product.title.toLowerCase()
+        
+        // Check if it's furniture or home decoration
+        return category.includes('furniture') || 
+        category.includes('home-decoration')
+      })
+      
+      // Take first 6 furniture products
+      setProducts(furnitureProducts.slice(0, 6))
     } catch (error) {
-      console.error('Error fetching upholstery data:', error)
+      console.error('Error fetching products:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    // Uncomment the line below when you have your API ready
-    // fetchUpholsteryData()
+    fetchProducts()
   }, [])
 
+  if (loading) {
+    return (
+      <div style={{ padding: '30px', maxWidth: '100%' }}>
+        <h2 className='text-8xl font-bold' style={{ 
+          fontWeight: 'bold', 
+          color: '#C72A01', 
+          marginBottom: '30px',
+        }}>
+          Just In
+        </h2>
+        <div className='w-full' style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          gap: '20px',
+          padding: '0 10px'
+        }}>
+          {[...Array(6)].map((_, index) => (
+            <div key={index} style={{
+              backgroundColor: '#FFF8DC',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              height: '500px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#666'
+            }}>
+              Loading...
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <h2 style={{ 
-        fontSize: '28px', 
+    <div className='just-in border-[1px] border-[#C72A01]' style={{ padding: '30px', maxWidth: '100%' }}>
+      <h2 className='text-8xl font-bold' style={{ 
         fontWeight: 'bold', 
         color: '#C72A01', 
         marginBottom: '30px',
-        textAlign: 'center'
       }}>
-        Just In: Upholstery
+        Just In
       </h2>
-      <div style={{
+      <div className='w-full' style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
         gap: '20px',
         padding: '0 10px'
       }}>
-        {upholsteryItems.map((item) => (
-          <div key={item.id} style={{
+        {products.map((product) => (
+          <div key={product.id} style={{
             backgroundColor: '#FFF8DC',
             borderRadius: '8px',
             overflow: 'hidden',
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            transition: 'transform 0.2s ease',
-            cursor: 'pointer'
+            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            cursor: 'pointer',
+            transform: 'translateY(0)',
+            willChange: 'transform'
           }}
           onMouseEnter={(e) => {
-            e.target.style.transform = 'translateY(-2px)'
+            const card = e.currentTarget
+            card.style.transform = 'translateY(-8px)'
+            card.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)'
           }}
           onMouseLeave={(e) => {
-            e.target.style.transform = 'translateY(0)'
+            const card = e.currentTarget
+            card.style.transform = 'translateY(0)'
+            card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)'
           }}
           >
-            <div style={{ height: '200px', overflow: 'hidden' }}>
+            <div style={{ height: '400px', overflow: 'hidden' }}>
               <img 
-                src={item.image} 
-                alt={item.name}
+                src={product.images[0]} 
+                alt={product.title}
                 style={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover'
                 }}
                 onError={(e) => {
-                  e.target.src = 'https://via.placeholder.com/300x200?text=Upholstery'
+                  e.target.src = 'https://via.placeholder.com/300x200?text=Furniture'
                 }}
               />
             </div>
@@ -116,17 +128,20 @@ function JustIn() {
                 fontSize: '18px', 
                 fontWeight: '600', 
                 margin: '0 0 5px 0',
-                color: '#333'
+                color: '#333',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
               }}>
-                {item.name}
+                {product.title}
               </h3>
               <p style={{ 
-                fontSize: '14px', 
-                color: '#666', 
+                fontSize: '16px', 
+                color: '#C72A01', 
                 margin: '0',
-                fontWeight: '500'
+                fontWeight: 'bold'
               }}>
-                {item.items} Items
+                ${product.price}
               </p>
             </div>
           </div>

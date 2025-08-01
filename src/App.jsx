@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react'
 import Navbar from './Components/Navbar'
+import Hero from './Components/Hero'
 import JustIn from './Components/JustIn'
+import Furniture from './Components/Furniture'
 
 function App() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth';
-  }, []);
 
   return (
     <>
       <Navbar />
+      <Hero />
       <JustIn />
+      <Furniture />
     </>
   )
 }
