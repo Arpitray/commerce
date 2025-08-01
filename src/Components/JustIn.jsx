@@ -65,24 +65,69 @@ function JustIn() {
   }, [])
 
   return (
-    <div className="just-in-container">
-      <h2 className="just-in-title">Just In: Upholstery</h2>
-      <div className="upholstery-grid">
+    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+      <h2 style={{ 
+        fontSize: '28px', 
+        fontWeight: 'bold', 
+        color: '#C72A01', 
+        marginBottom: '30px',
+        textAlign: 'center'
+      }}>
+        Just In: Upholstery
+      </h2>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: '20px',
+        padding: '0 10px'
+      }}>
         {upholsteryItems.map((item) => (
-          <div key={item.id} className="upholstery-card">
-            <div className="image-container">
+          <div key={item.id} style={{
+            backgroundColor: '#FFF8DC',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            transition: 'transform 0.2s ease',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-2px)'
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)'
+          }}
+          >
+            <div style={{ height: '200px', overflow: 'hidden' }}>
               <img 
                 src={item.image} 
                 alt={item.name}
-                className="upholstery-image"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
                 onError={(e) => {
                   e.target.src = 'https://via.placeholder.com/300x200?text=Upholstery'
                 }}
               />
             </div>
-            <div className="item-info">
-              <h3 className="item-name">{item.name}</h3>
-              <p className="item-count">{item.items} Items</p>
+            <div style={{ padding: '15px' }}>
+              <h3 style={{ 
+                fontSize: '18px', 
+                fontWeight: '600', 
+                margin: '0 0 5px 0',
+                color: '#333'
+              }}>
+                {item.name}
+              </h3>
+              <p style={{ 
+                fontSize: '14px', 
+                color: '#666', 
+                margin: '0',
+                fontWeight: '500'
+              }}>
+                {item.items} Items
+              </p>
             </div>
           </div>
         ))}
