@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './Components/Navbar'
 import JustIn from './Components/JustIn'
+
 function App() {
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }, []);
 
   return (
     <>
-     <Navbar />
-     <JustIn />
+      <Navbar />
+      <JustIn />
     </>
   )
 }

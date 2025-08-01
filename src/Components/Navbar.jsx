@@ -18,9 +18,9 @@ function Navbar() {
     if (!logo || !navbar) return
 
     gsap.set(logo, {
-      fontSize: '12rem',
+      fontSize: '16rem',
       position: 'fixed',
-      top: '15vh',
+      top: '20vh',
       left: '50%',
       xPercent: -50,
       zIndex: 100
