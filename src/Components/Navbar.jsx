@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useCart } from '../context/CartContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function Navbar() {
+  const { cartItems, isCartOpen, setIsCartOpen, getCartCount } = useCart()
   const navbarRef = useRef(null)
   const [hoveredLink, setHoveredLink] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
@@ -57,10 +60,10 @@ function Navbar() {
   }, [])
 
   const navLinks = [
-    { id: 'home', text: 'Home', href: '#' },
-    { id: 'about', text: 'Product Page', href: '#' },
-    { id: 'categories', text: 'Categories', href: '#' },
-    { id: 'contact', text: 'Contact', href: '#' }
+    { id: 'home', text: 'Home', to: '/' },
+    { id: 'product', text: 'Product Page', to: '/product/1' },
+    { id: 'categories', text: 'Categories', to: '/categories' },
+    { id: 'contact', text: 'Contact', to: '#' }
   ]
 
   return (
@@ -71,12 +74,12 @@ function Navbar() {
       }`}
       style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.1)' }}
     >
-      <div style={{padding:"30px"}} className="flex items-center justify-center h-full">
+      <div style={{padding:"30px"}} className="flex items-center justify-between h-full">
         <ul className="flex space-x-8 gap-12 text-[#FEFCDA] font-bold">
           {navLinks.map((link) => (
             <li key={link.id}>
-              <a 
-                href={link.href} 
+              <Link 
+                to={link.to}
                 className={`transition-all duration-300 ${
                   hoveredLink && hoveredLink !== link.id 
                     ? 'opacity-20' 
@@ -84,12 +87,57 @@ function Navbar() {
                 } hover:opacity-100 hover:scale-105`}
                 onMouseEnter={() => setHoveredLink(link.id)}
                 onMouseLeave={() => setHoveredLink(null)}
+                style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 {link.text}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
+        
+        {/* Cart Icon */}
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => setIsCartOpen(true)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#FEFCDA',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              padding: '8px',
+              borderRadius: '50%',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'transparent'
+            }}
+          >
+            🛒
+          </button>
+          {getCartCount() > 0 && (
+            <div style={{
+              position: 'absolute',
+              top: '-5px',
+              right: '-5px',
+              backgroundColor: '#C72A01',
+              color: 'white',
+              borderRadius: '50%',
+              width: '20px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.8rem',
+              fontWeight: 'bold'
+            }}>
+              {getCartCount()}
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   )

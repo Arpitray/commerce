@@ -1,18 +1,13 @@
 import React from 'react'
-import furniture from '../assets/furnitures.png'
+import decor from '../assets/decor.png'
 
-function Furniture() {
+function HomeDecor() {
   return (
     <div>
-      <div className='furniture border-t-2 border-[#c72a01] h-screen w-full flex justify-center'>
-        <div className="imagecontain h-full flex items-center w-1/2">
-        <div className="image h-[70%] w-full  ">
-        <img className='w-full h-full object-cover' src={furniture} alt="" /></div>
-        </div>
- 
-        <div style={{padding: '140px 60px'}} className="content w-1/2 flex flex-col gap-20 items-end justify-start">
-        <h1 className='text-7xl text-[#C72A01] font-bold tracking-tighter'>Furniture That Fits Your Life</h1>
-        <p style={{color: '#666',paddingRight: '100px'}} className='text-3xl w-[95%] tracking-tight font-semibold'>Discover our curated collection of modern furniture built for everyday living. From sleek sofas to functional storage, every piece is designed to elevate your space with comfort and style.</p>
+      <div className='homedecor border-t-2 border-[#c72a01] h-screen w-full flex'>
+        <div style={{padding: '140px 60px'}} className="content w-1/2 flex flex-col gap-20 items-start justify-start">
+        <h1 className='text-7xl text-[#C72A01] font-["restore"]'>Home Decor That Tells Your Story</h1>
+        <p style={{color: '#666'}} className='text-3xl w-[95%] text-start tracking-tight font-semibold'>Transform your living space with our exquisite collection of home decor. From elegant wall art to cozy textiles, each piece is carefully selected to reflect your unique style and create a home that truly feels like you.</p>
         <div className="btn w-full flex justify-center items-center h-32 ">
             <button 
               style={{
@@ -56,10 +51,14 @@ function Furniture() {
         </div>
         </div>
 
+        <div className="imagecontain h-full flex items-center w-1/2">
+        <div className="image h-[70%] w-full  ">
+        <img className='w-full h-full object-cover' src={decor} alt="" /></div>
+        </div>
       </div>
   
     </div>
   )
 }
 
-export default Furniture
+export default HomeDecor 

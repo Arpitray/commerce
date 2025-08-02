@@ -14,10 +14,10 @@ function Hero() {
     if (!logo) return
 
     gsap.set(logo, {
-      fontSize: '23rem',
+      fontSize: '25rem',
       position: 'fixed',
-      top: '60%',
-      left: '60%',
+      top: '50%',
+      left: '50%',
       xPercent: -50,
       yPercent: -50,
       zIndex: 100
@@ -27,7 +27,7 @@ function Hero() {
       scrollTrigger: {
         trigger: document.body,
         start: 'top top',
-        end: '+=300',
+        end: 'bottom 520%',
         scrub: true
       }
     })
@@ -65,12 +65,11 @@ function Hero() {
         {/* Animated SUMMOR text */}
         <div 
           ref={logoRef}
-          className="text-[#C72A01] font-bold select-none"
+          className="text-[#C72A01] select-none font-['restore']"
         >
           SUMMOR.
         </div>
       </div>
-      <div style={{marginTop:"50px"}} className="redLine h-[2px] w-full bg-[#C72A01]"></div>
     </div>
   )
 }

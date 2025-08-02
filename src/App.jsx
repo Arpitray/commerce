@@ -1,18 +1,42 @@
-import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './Components/Navbar'
-import Hero from './Components/Hero'
-import JustIn from './Components/JustIn'
-import Furniture from './Components/Furniture'
+import Home from './Components/Pages/Home'
+import Categories from './Components/Pages/Categories'
+import CategoryPage from './Components/Pages/CategoryPage'
+import ProductPage from './Components/Pages/ProductPage'
+import Cart from './Components/Cart'
+import { CartProvider, useCart } from './context/CartContext'
 
-function App() {
+function AppContent() {
+  const { cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart } = useCart()
 
   return (
     <>
       <Navbar />
-      <Hero />
-      <JustIn />
-      <Furniture />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/category/:categoryId" element={<CategoryPage />} />
+        <Route path="/product/:productId" element={<ProductPage />} />
+      </Routes>
+      <Cart 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeFromCart}
+      />
     </>
+  )
+}
+
+function App() {
+  return (
+    <CartProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </CartProvider>
   )
 }
 

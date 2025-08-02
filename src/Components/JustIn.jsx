@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function JustIn() {
+  const navigate = useNavigate()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -73,8 +75,9 @@ function JustIn() {
   }
 
   return (
-    <div className='just-in border-[1px] border-[#C72A01]' style={{ padding: '30px', maxWidth: '100%' }}>
-      <h2 className='text-8xl font-bold' style={{ 
+    <div className="conatiner">
+      <div className='just-in border-t-2 border-[#c72a01] ' style={{ padding: '30px',marginTop:"100px", maxWidth: '100%' }}>
+      <h2 className='text-8xl font-["restore"]' style={{ 
         fontWeight: 'bold', 
         color: '#C72A01', 
         marginBottom: '30px',
@@ -93,23 +96,45 @@ function JustIn() {
             borderRadius: '8px',
             overflow: 'hidden',
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             cursor: 'pointer',
-            transform: 'translateY(0)',
-            willChange: 'transform'
+            position: 'relative'
           }}
+          onClick={() => navigate(`/product/${product.id}`)}
           onMouseEnter={(e) => {
             const card = e.currentTarget
-            card.style.transform = 'translateY(-8px)'
+            const contentDiv = card.querySelector('.card-content')
+            const imageDiv = card.querySelector('.card-image')
+            if (contentDiv) {
+              contentDiv.style.transform = 'translateY(-8px)'
+            }
+            if (imageDiv) {
+              imageDiv.style.transform = 'translateY(-8px)'
+            }
             card.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)'
           }}
           onMouseLeave={(e) => {
             const card = e.currentTarget
-            card.style.transform = 'translateY(0)'
+            const contentDiv = card.querySelector('.card-content')
+            const imageDiv = card.querySelector('.card-image')
+            if (contentDiv) {
+              contentDiv.style.transform = 'translateY(0)'
+            }
+            if (imageDiv) {
+              imageDiv.style.transform = 'translateY(0)'
+            }
             card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)'
           }}
           >
-            <div style={{ height: '400px', overflow: 'hidden' }}>
+            <div 
+              className="card-image"
+              style={{ 
+                height: '400px', 
+                overflow: 'hidden',
+                transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                transform: 'translateY(0)',
+                willChange: 'transform'
+              }}
+            >
               <img 
                 src={product.images[0]} 
                 alt={product.title}
@@ -123,7 +148,15 @@ function JustIn() {
                 }}
               />
             </div>
-            <div style={{ padding: '15px' }}>
+            <div 
+              className="card-content"
+              style={{ 
+                padding: '15px',
+                transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                transform: 'translateY(0)',
+                willChange: 'transform'
+              }}
+            >
               <h3 style={{ 
                 fontSize: '18px', 
                 fontWeight: '600', 
@@ -148,6 +181,8 @@ function JustIn() {
         ))}
       </div>
     </div>
+    </div>
+    
   )
 }
 
