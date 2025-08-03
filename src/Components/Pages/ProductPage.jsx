@@ -71,9 +71,9 @@ function ProductPage() {
   const totalPrice = product.price * quantity
 
   return (
-    <div className="product-page-container" style={{ paddingTop: '50px', minHeight: '100vh', backgroundColor: '#FEFCDA', overflowX: 'hidden', width: '100%' }}>
-      <div className="product-page-content" style={{ margin: '40px 10px', maxWidth: '1200px', width: '100%' }}>
-        <div className="product-layout" style={{ display: 'flex', gap: '40px' }}>
+    <div className="product-page-container" style={{ paddingTop: '50px', minHeight: '100vh', backgroundColor: '#FEFCDA', width: '100%', overflowX: 'hidden' }}>
+      <div className="product-page-content" style={{ margin: '0 auto', padding: '40px 20px' }}>
+        <div className="product-layout justify-center" style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
           {/* Product Image */}
           <div className="product-image-section" style={{ width: '50%' }}>
             <div className="product-image" style={{
@@ -140,7 +140,30 @@ function ProductPage() {
                     color: '#704F24',
                     fontSize: '1.2rem',
                     cursor: 'pointer',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                  }}
+                  onMouseLeave={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                    button.style.transform = 'translateY(0)';
+                  }}
+                  onMouseDown={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                    button.style.transform = 'translateY(5px)';
+                    button.style.transition = '200ms';
+                  }}
+                  onMouseUp={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                    button.style.transform = 'translateY(3px)';
+                    button.style.transition = 'all 0.3s ease';
                   }}
                 >
                   -
@@ -159,7 +182,30 @@ function ProductPage() {
                     color: '#704F24',
                     fontSize: '1.2rem',
                     cursor: 'pointer',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                  }}
+                  onMouseLeave={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                    button.style.transform = 'translateY(0)';
+                  }}
+                  onMouseDown={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                    button.style.transform = 'translateY(5px)';
+                    button.style.transition = '200ms';
+                  }}
+                  onMouseUp={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                    button.style.transform = 'translateY(3px)';
+                    button.style.transition = 'all 0.3s ease';
                   }}
                 >
                   +
@@ -178,9 +224,10 @@ function ProductPage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="action-buttons" style={{ display: 'flex', gap: '15px', marginBottom: '30px' }}>
+            <div className="action-buttons flex flex-col md:flex-row gap-4 md:gap-4 mb-8">
               <button 
                 onClick={() => addToCart(product, quantity)}
+                className="w-full md:flex-1"
                 style={{
                   padding: '15px 40px',
                   backgroundColor: '#C72A01',
@@ -190,12 +237,36 @@ function ProductPage() {
                   fontSize: '1.1rem',
                   fontWeight: 'bold',
                   cursor: 'pointer',
-                  flex: '1'
+                  boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  const button = e.currentTarget;
+                  button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                }}
+                onMouseLeave={(e) => {
+                  const button = e.currentTarget;
+                  button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                  button.style.transform = 'translateY(0)';
+                }}
+                onMouseDown={(e) => {
+                  const button = e.currentTarget;
+                  button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                  button.style.transform = 'translateY(5px)';
+                  button.style.transition = '200ms';
+                }}
+                onMouseUp={(e) => {
+                  const button = e.currentTarget;
+                  button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                  button.style.transform = 'translateY(3px)';
+                  button.style.transition = 'all 0.3s ease';
                 }}
               >
                 Add to Cart
               </button>
-              <button style={{
+              <button 
+                className="w-full md:flex-1"
+                style={{
                 padding: '15px 40px',
                 backgroundColor: 'white',
                 color: '#704F24',
@@ -204,7 +275,29 @@ function ProductPage() {
                 fontSize: '1.1rem',
                 fontWeight: 'bold',
                 cursor: 'pointer',
-                flex: '1'
+                boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+              }}
+              onMouseLeave={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                button.style.transform = 'translateY(0)';
+              }}
+              onMouseDown={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                button.style.transform = 'translateY(5px)';
+                button.style.transition = '200ms';
+              }}
+              onMouseUp={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                button.style.transform = 'translateY(3px)';
+                button.style.transition = 'all 0.3s ease';
               }}>
                 Buy Now
               </button>
@@ -222,7 +315,8 @@ function ProductPage() {
           }
           
           .product-page-content {
-            margin: 20px 10px !important;
+            margin: 0 auto !important;
+            padding: 20px 15px !important;
             max-width: 100% !important;
           }
           
@@ -230,6 +324,7 @@ function ProductPage() {
             flex-direction: column !important;
             gap: 30px !important;
             align-items: center !important;
+            justify-content: center !important;
           }
           
           .product-image-section {

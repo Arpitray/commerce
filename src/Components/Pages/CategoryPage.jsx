@@ -96,18 +96,6 @@ function CategoryPage() {
       } catch (error) {
         console.error('Error fetching products:', error)
         // Fallback to mock data if API fails
-        setProducts([
-          { id: 1, name: 'Modern Sofa', price: 1299.99, image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop' },
-          { id: 2, name: 'Elegant Vase', price: 89.99, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop' },
-          { id: 3, name: 'Kitchen Table', price: 599.99, image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop' },
-          { id: 4, name: 'Sports Equipment', price: 199.99, image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop' },
-          { id: 5, name: 'Table Lamp', price: 149.99, image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=300&fit=crop' },
-          { id: 6, name: 'Kitchen Appliances', price: 299.99, image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=300&fit=crop' },
-          { id: 7, name: 'Yoga Mat', price: 49.99, image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop' },
-          { id: 8, name: 'Dining Chair', price: 299.99, image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=300&fit=crop' },
-          { id: 9, name: 'Wall Art', price: 199.99, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop' },
-          { id: 10, name: 'Bed Frame', price: 799.99, image: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=400&h=300&fit=crop' }
-        ])
       } finally {
         setLoading(false)
       }
@@ -125,20 +113,20 @@ function CategoryPage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#d4a373]" style={{ paddingTop: '80px' }}>
-      <div className="mx-auto" style={{ padding: '40px 20px' }}>
-        <h1 className="font-['restore'] text-center font-bold text-[#C72A01]" style={{ fontSize: '5rem', marginBottom: '20px' }}>
+    <div className="w-full min-h-screen bg-[#d4a373]" style={{paddingTop: '60px'}}>
+      <div className="mx-auto" style={{paddingLeft: '8px', paddingRight: '8px', paddingTop: '16px', paddingBottom: '16px'}}>
+        <h1 className="font-['restore'] text-center font-bold text-[#C72A01] text-4xl md:text-6xl lg:text-8xl leading-tight md:leading-tight lg:leading-none break-words" style={{marginBottom: '8px'}}>
           {categoryNames[categoryId] || 'Category'}
         </h1>
-        <p className="text-center text-[#666]" style={{ fontSize: '1.2rem', marginBottom: '50px' }}>
+        <p className="text-center text-[#666] text-base md:text-lg lg:text-xl" style={{marginBottom: '32px'}}>
           Discover our amazing collection of {categoryNames[categoryId]?.toLowerCase() || 'products'} ({products.length} items)
         </p>
         
-        <div className="grid gap-8" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', padding: '20px 0' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 lg:gap-8" style={{paddingTop: '8px', paddingBottom: '8px'}}>
           {products.map((product) => (
             <div 
               key={product.id} 
-              className="bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer hover:shadow-2xl"
+              className="bg-white rounded-lg md:rounded-xl lg:rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer hover:shadow-2xl"
               onClick={() => navigate(`/product/${product.id}`)}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-10px)'
@@ -150,17 +138,16 @@ function CategoryPage() {
               }}
             >
               <div 
-                className="w-full bg-cover bg-center bg-[#FFF8DC]"
+                className="w-full bg-cover bg-center bg-[#FFF8DC] h-64 md:h-80 lg:h-96"
                 style={{
-                  height: '400px',
                   backgroundImage: `url(${product.image})`
                 }}
               ></div>
-              <div style={{ padding: '20px' }}>
-                <h3 className="font-bold text-[#704F24]" style={{ fontSize: '1.3rem', marginBottom: '10px' }}>
+              <div style={{padding: '16px'}}>
+                <h3 className="font-bold text-[#704F24] text-lg md:text-xl lg:text-xl" style={{marginBottom: '8px'}}>
                   {product.name}
                 </h3>
-                <div className="font-bold text-[#C72A01]" style={{ fontSize: '1.5rem', marginBottom: '15px' }}>
+                <div className="font-bold text-[#C72A01] text-xl md:text-2xl lg:text-2xl" style={{marginBottom: '12px'}}>
                   ${product.price}
                 </div>
                 <button 
@@ -168,8 +155,36 @@ function CategoryPage() {
                     e.stopPropagation()
                     addToCart(product, 1)
                   }}
-                  className="w-full bg-[#704F24] text-white border-none rounded-full font-bold cursor-pointer transition-colors duration-300 hover:bg-[#C72A01]"
-                  style={{ padding: '12px', fontSize: '1rem' }}
+                  className="w-full bg-[#704F24] text-white border-none rounded-full font-bold cursor-pointer transition-colors duration-300 hover:bg-[#C72A01] text-sm md:text-base lg:text-base"
+                  style={{ 
+                    paddingTop: '8px',
+                    paddingBottom: '8px',
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                    boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                  }}
+                  onMouseLeave={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                    button.style.transform = 'translateY(0)';
+                  }}
+                  onMouseDown={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                    button.style.transform = 'translateY(5px)';
+                    button.style.transition = '200ms';
+                  }}
+                  onMouseUp={(e) => {
+                    const button = e.currentTarget;
+                    button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                    button.style.transform = 'translateY(3px)';
+                    button.style.transition = 'all 0.3s ease';
+                  }}
                 >
                   Add to Cart
                 </button>
@@ -178,115 +193,6 @@ function CategoryPage() {
           ))}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .w-full {
-            padding-top: 60px !important;
-          }
-          
-          .w-full > div {
-            padding: 15px 10px !important;
-          }
-          
-          .font-["restore"] {
-            font-size: 2rem !important;
-            line-height: 1.2 !important;
-            margin-bottom: 10px !important;
-            word-wrap: break-word !important;
-            overflow-wrap: break-word !important;
-          }
-          
-          .w-full > div > p {
-            font-size: 1rem !important;
-            margin-bottom: 30px !important;
-          }
-          
-          .grid {
-            grid-template-columns: 1fr !important;
-            gap: 20px !important;
-            padding: 10px 0 !important;
-          }
-          
-          .grid > div {
-            border-radius: 10px !important;
-          }
-          
-          .grid > div > div:first-child {
-            height: 250px !important;
-          }
-          
-          .grid > div > div:last-child {
-            padding: 15px !important;
-          }
-          
-          .grid h3 {
-            font-size: 1.1rem !important;
-          }
-          
-          .grid > div > div:last-child > div {
-            font-size: 1.3rem !important;
-            margin-bottom: 12px !important;
-          }
-          
-          .grid button {
-            padding: 10px !important;
-            font-size: 0.9rem !important;
-          }
-        }
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-          .w-full {
-            padding-top: 70px !important;
-          }
-          
-          .w-full > div {
-            padding: 30px 15px !important;
-          }
-          
-          .font-["restore"] {
-            font-size: 4rem !important;
-            line-height: 1.1 !important;
-            margin-bottom: 18px !important;
-          }
-          
-          .grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 25px !important;
-            padding: 15px 0 !important;
-          }
-          
-          .grid > div > div:first-child {
-            height: 350px !important;
-          }
-        }
-        
-        @media (min-width: 1025px) {
-          .w-full {
-            padding-top: 80px !important;
-          }
-          
-          .w-full > div {
-            padding: 40px 20px !important;
-          }
-          
-          .font-["restore"] {
-            font-size: 5rem !important;
-            line-height: 1 !important;
-            margin-bottom: 20px !important;
-          }
-          
-          .grid {
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)) !important;
-            gap: 30px !important;
-            padding: 20px 0 !important;
-          }
-          
-          .grid > div > div:first-child {
-            height: 400px !important;
-          }
-        }
-      `}</style>
     </div>
   )
 }

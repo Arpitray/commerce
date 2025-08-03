@@ -59,7 +59,30 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
                 fontSize: '1.5rem',
                 color: 'white',
                 cursor: 'pointer',
-                padding: '5px'
+                padding: '5px',
+                boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+              }}
+              onMouseLeave={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                button.style.transform = 'translateY(0)';
+              }}
+              onMouseDown={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                button.style.transform = 'translateY(5px)';
+                button.style.transition = '200ms';
+              }}
+              onMouseUp={(e) => {
+                const button = e.currentTarget;
+                button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                button.style.transform = 'translateY(3px)';
+                button.style.transition = 'all 0.3s ease';
               }}
             >
               ×
@@ -146,7 +169,30 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
                         color: '#704F24',
                         fontSize: '1rem',
                         cursor: 'pointer',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                      }}
+                      onMouseLeave={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                        button.style.transform = 'translateY(0)';
+                      }}
+                      onMouseDown={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                        button.style.transform = 'translateY(5px)';
+                        button.style.transition = '200ms';
+                      }}
+                      onMouseUp={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                        button.style.transform = 'translateY(3px)';
+                        button.style.transition = 'all 0.3s ease';
                       }}
                     >
                       -
@@ -170,7 +216,30 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
                         color: '#704F24',
                         fontSize: '1rem',
                         cursor: 'pointer',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                      }}
+                      onMouseLeave={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                        button.style.transform = 'translateY(0)';
+                      }}
+                      onMouseDown={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                        button.style.transform = 'translateY(5px)';
+                        button.style.transition = '200ms';
+                      }}
+                      onMouseUp={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                        button.style.transform = 'translateY(3px)';
+                        button.style.transition = 'all 0.3s ease';
                       }}
                     >
                       +
@@ -183,7 +252,31 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
                         border: 'none',
                         color: '#C72A01',
                         cursor: 'pointer',
-                        fontSize: '0.9rem'
+                        fontSize: '0.9rem',
+                        boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
+                        transition: 'all 0.3s ease',
+                        padding: '5px 10px'
+                      }}
+                      onMouseEnter={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                      }}
+                      onMouseLeave={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+                        button.style.transform = 'translateY(0)';
+                      }}
+                      onMouseDown={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                        button.style.transform = 'translateY(5px)';
+                        button.style.transition = '200ms';
+                      }}
+                      onMouseUp={(e) => {
+                        const button = e.currentTarget;
+                        button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+                        button.style.transform = 'translateY(3px)';
+                        button.style.transition = 'all 0.3s ease';
                       }}
                     >
                       Remove
@@ -225,13 +318,31 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
               fontSize: '1.1rem',
               fontWeight: 'bold',
               cursor: 'pointer',
-              transition: 'background-color 0.3s ease'
+              transition: 'all 0.3s ease',
+              boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px'
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = '#704F24'
+              const button = e.currentTarget;
+              button.style.backgroundColor = '#704F24';
+              button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = '#C72A01'
+              const button = e.currentTarget;
+              button.style.backgroundColor = '#C72A01';
+              button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
+              button.style.transform = 'translateY(0)';
+            }}
+            onMouseDown={(e) => {
+              const button = e.currentTarget;
+              button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+              button.style.transform = 'translateY(5px)';
+              button.style.transition = '200ms';
+            }}
+            onMouseUp={(e) => {
+              const button = e.currentTarget;
+              button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
+              button.style.transform = 'translateY(3px)';
+              button.style.transition = 'all 0.3s ease';
             }}>
               Checkout
             </button>

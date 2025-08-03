@@ -13,60 +13,74 @@ function Hero() {
 
     if (!logo) return
 
-    // Check if mobile device
-    const isMobile = window.innerWidth <= 768
+    const setupAnimation = () => {
+      // Check if mobile device
+      const isMobile = window.innerWidth <= 768
 
-    // Only apply animations if not mobile
-    if (!isMobile) {
-      gsap.set(logo, {
-        fontSize: '25rem',
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        xPercent: -50,
-        yPercent: -50,
-        zIndex: 100
-      })
+      // Clear any existing ScrollTriggers
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: 'bottom 520%',
-          scrub: true
-        }
-      })
+      if (!isMobile) {
+        // Desktop: Original animation - starts centered, moves to top-left
+        gsap.set(logo, {
+          fontSize: '25rem', // Reduced from 25rem to prevent cutoff
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          xPercent: -50,
+          yPercent: -50,
+          zIndex: 100
+        })
 
-      tl.to(logo, {
-        fontSize: '2rem',
-        top: '0.5rem',
-        left: '2rem',
-        xPercent: 0,
-        yPercent: 0,
-        duration: 1
-      })
-    } else {
-      // Mobile: static positioning without animation
-      gsap.set(logo, {
-        fontSize: '2rem',
-        position: 'fixed',
-        top: '0.5rem',
-        left: '2rem',
-        xPercent: 0,
-        yPercent: 0,
-        zIndex: 100
-      })
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom 520%',
+            scrub: true
+          }
+        })
+
+        tl.to(logo, {
+          fontSize: '2rem',
+          top: '0.5rem',
+          left: '2rem',
+          xPercent: 0,
+          yPercent: 0,
+          duration: 1
+        })
+      } else {
+        // Mobile: Static centered positioning within hero - no animation
+        gsap.set(logo, {
+          fontSize: '4rem', // Larger for mobile readability
+          position: 'static',
+          transform: 'none',
+          zIndex: 100,
+          lineHeight: 1,
+          textAlign: 'center'
+        })
+      }
     }
+
+    setupAnimation()
+
+    // Handle window resize
+    const handleResize = () => {
+      setupAnimation()
+    }
+
+    window.addEventListener('resize', handleResize)
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
   return (
     <div className="relative">
       <div 
-        className="w-full flex items-center justify-center"
+        className="w-full flex items-center justify-center relative"
         style={{
           backgroundImage: `url(${homeImage2})`,
           backgroundSize: 'cover',
@@ -79,10 +93,10 @@ function Hero() {
       >
         <div className="absolute inset-0 bg-black/20"></div>
         
-        {/* Animated SUMMOR text */}
+        {/* Animated SUMMOR text - centered on mobile, animated on desktop */}
         <div 
           ref={logoRef}
-          className="text-[#C72A01] select-none font-['restore']"
+          className="text-[#C72A01] select-none font-['restore'] md:fixed md:block relative z-[100]"
         >
           SUMMOR<span className='text-[#FFF8DC]'>.</span>
         </div>

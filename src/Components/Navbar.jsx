@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Cart from '../assets/cart.png'
 import { useCart } from '../context/CartContext'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -62,7 +63,6 @@ function Navbar() {
 
   const navLinks = [
     { id: 'home', text: 'Home', to: '/' },
-    { id: 'product', text: 'Product Page', to: '/product/1' },
     { id: 'categories', text: 'Categories', to: '/categories' },
     { id: 'contact', text: 'Contact', to: '#' }
   ]
@@ -70,19 +70,19 @@ function Navbar() {
   return (
     <nav 
       ref={navbarRef}
-      className={`fixed top-0 left-0 right-0 z-50 h-16 bg-white/0 backdrop-blur-0 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 h-16 bg-[#64351f] backdrop-blur-xl transition-all duration-300 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
       style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.1)' }}
     >
-      <div style={{padding:"30px"}} className="flex items-center justify-between h-full">
+      <div style={{paddingLeft: "16px", paddingRight: "16px"}} className="flex items-center justify-between h-full">
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-8 gap-12 justify-center w-full text-[#FEFCDA] font-bold font-['slabo']">
+        <ul className="hidden md:flex space-x-12 gap-12 justify-center w-full text-[#FEFCDA]  font-bold font-['slabo']">
           {navLinks.map((link) => (
             <li key={link.id}>
-              <Link 
+              <Link
                 to={link.to}
-                className={`transition-all duration-300 ${
+                className={`transition-all duration-300 text-xl ${
                   hoveredLink && hoveredLink !== link.id 
                     ? 'opacity-20' 
                     : 'opacity-100'
@@ -104,7 +104,7 @@ function Navbar() {
           style={{
             background: 'none',
             border: 'none',
-            color: '#FEFCDA',
+            color: 'black',
             fontSize: '1.5rem',
             cursor: 'pointer',
             padding: '8px',
@@ -136,7 +136,7 @@ function Navbar() {
               e.target.style.backgroundColor = 'transparent'
             }}
           >
-            🛒
+            <img src={Cart} alt="Menu" style={{ width: '24px', height: '24px' }} />
           </button>
           {getCartCount() > 0 && (
             <div style={{
@@ -223,12 +223,6 @@ function Navbar() {
           to {
             opacity: 1;
             transform: translateY(0);
-          }
-        }
-        
-        @media (max-width: 768px) {
-          nav > div {
-            padding: 15px !important;
           }
         }
       `}</style>

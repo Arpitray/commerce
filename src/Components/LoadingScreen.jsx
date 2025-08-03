@@ -65,7 +65,7 @@ const LoadingScreen = ({ onComplete }) => {
           fontFamily: 'restore, Arial, sans-serif',
           margin: 0
         }}>
-          COMMERCE
+          SUMMORE<span style={{ color: 'black' }}>.</span>
         </h1>
         
         {/* Truck Loading Animation */}
