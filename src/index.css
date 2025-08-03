@@ -22,3 +22,7 @@ html {
   font-family: "restore";
   src: url("./assets/restore.ttf");
 }
+@font-face{
+  font-family: "slabo";
+  src: url("./assets/slabo.ttf");
+}

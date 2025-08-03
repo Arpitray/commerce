@@ -11,6 +11,7 @@ function Navbar() {
   const navbarRef = useRef(null)
   const [hoveredLink, setHoveredLink] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const lastScrollY = useRef(0)
 
   useEffect(() => {
@@ -75,7 +76,8 @@ function Navbar() {
       style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.1)' }}
     >
       <div style={{padding:"30px"}} className="flex items-center justify-between h-full">
-        <ul className="flex space-x-8 gap-12 text-[#FEFCDA] font-bold">
+        {/* Desktop Navigation */}
+        <ul className="hidden md:flex space-x-8 gap-12 justify-center w-full text-[#FEFCDA] font-bold font-['slabo']">
           {navLinks.map((link) => (
             <li key={link.id}>
               <Link 
@@ -94,6 +96,24 @@ function Navbar() {
             </li>
           ))}
         </ul>
+        
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden block"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#FEFCDA',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            padding: '8px',
+            borderRadius: '50%',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          {isMobileMenuOpen ? '✕' : '☰'}
+        </button>
         
         {/* Cart Icon */}
         <div style={{ position: 'relative' }}>
@@ -139,6 +159,79 @@ function Navbar() {
           )}
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden block"
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(112, 79, 36, 0.95)',
+            backdropFilter: 'blur(10px)',
+            borderBottom: '2px solid rgba(199, 42, 1, 0.95)',
+            padding: '20px',
+            animation: 'slideDown 0.3s ease-out'
+          }}
+        >
+          <ul style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            listStyle: 'none',
+            margin: 0,
+            padding: 0
+          }}>
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                <Link 
+                  to={link.to}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={{
+                    textDecoration: 'none',
+                    color: '#FEFCDA',
+                    fontSize: '1.2rem',
+                    fontWeight: 'bold',
+                    fontFamily: 'slabo, Arial, sans-serif',
+                    display: 'block',
+                    padding: '10px 0',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.opacity = '0.7'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.opacity = '1'
+                  }}
+                >
+                  {link.text}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @media (max-width: 768px) {
+          nav > div {
+            padding: 15px !important;
+          }
+        }
+      `}</style>
     </nav>
   )
 }

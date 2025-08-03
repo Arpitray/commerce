@@ -118,86 +118,175 @@ function CategoryPage() {
 
   if (loading) {
     return (
-      <div style={{ paddingTop: '80px', minHeight: '100vh', backgroundColor: '#FEFCDA', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ fontSize: '1.5rem', color: '#704F24' }}>Loading...</div>
+      <div className="flex items-center justify-center min-h-screen bg-[#FEFCDA]" style={{ paddingTop: '80px' }}>
+        <div className="text-2xl text-[#704F24]">Loading...</div>
       </div>
     )
   }
 
   return (
-    <div style={{ paddingTop: '80px', minHeight: '100vh', backgroundColor: '#FEFCDA' }}>
-      <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h1 style={{ fontSize: '3rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '20px', color: '#704F24' }}>
+    <div className="w-full min-h-screen bg-[#d4a373]" style={{ paddingTop: '80px' }}>
+      <div className="mx-auto" style={{ padding: '40px 20px' }}>
+        <h1 className="font-['restore'] text-center font-bold text-[#C72A01]" style={{ fontSize: '5rem', marginBottom: '20px' }}>
           {categoryNames[categoryId] || 'Category'}
         </h1>
-        <p style={{ textAlign: 'center', fontSize: '1.2rem', marginBottom: '50px', color: '#666' }}>
+        <p className="text-center text-[#666]" style={{ fontSize: '1.2rem', marginBottom: '50px' }}>
           Discover our amazing collection of {categoryNames[categoryId]?.toLowerCase() || 'products'} ({products.length} items)
         </p>
         
-                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px', padding: '20px 0' }}>
-           {products.map((product) => (
-             <div key={product.id} style={{
-               backgroundColor: 'white',
-               borderRadius: '15px',
-               overflow: 'hidden',
-               boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-               cursor: 'pointer'
-             }}
-             onClick={() => navigate(`/product/${product.id}`)}
-             onMouseEnter={(e) => {
-               e.target.style.transform = 'translateY(-10px)'
-               e.target.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)'
-             }}
-             onMouseLeave={(e) => {
-               e.target.style.transform = 'translateY(0)'
-               e.target.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)'
-             }}>
-              <div style={{
-                width: '100%',
-                height: '250px',
-                backgroundImage: `url(${product.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundColor: '#f5f5f5'
-              }}></div>
+        <div className="grid gap-8" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', padding: '20px 0' }}>
+          {products.map((product) => (
+            <div 
+              key={product.id} 
+              className="bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer hover:shadow-2xl"
+              onClick={() => navigate(`/product/${product.id}`)}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-10px)'
+                e.target.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)'
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)'
+                e.target.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)'
+              }}
+            >
+              <div 
+                className="w-full bg-cover bg-center bg-[#FFF8DC]"
+                style={{
+                  height: '400px',
+                  backgroundImage: `url(${product.image})`
+                }}
+              ></div>
               <div style={{ padding: '20px' }}>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '10px', color: '#704F24' }}>
+                <h3 className="font-bold text-[#704F24]" style={{ fontSize: '1.3rem', marginBottom: '10px' }}>
                   {product.name}
                 </h3>
-                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#C72A01', marginBottom: '15px' }}>
+                <div className="font-bold text-[#C72A01]" style={{ fontSize: '1.5rem', marginBottom: '15px' }}>
                   ${product.price}
                 </div>
-                                 <button 
-                   onClick={(e) => {
-                     e.stopPropagation()
-                     addToCart(product, 1)
-                   }}
-                   style={{
-                     width: '100%',
-                     padding: '12px',
-                     backgroundColor: '#704F24',
-                     color: 'white',
-                     border: 'none',
-                     borderRadius: '25px',
-                     fontSize: '1rem',
-                     fontWeight: 'bold',
-                     cursor: 'pointer',
-                     transition: 'background-color 0.3s ease'
-                   }}
-                   onMouseEnter={(e) => {
-                     e.target.style.backgroundColor = '#C72A01'
-                   }}
-                   onMouseLeave={(e) => {
-                     e.target.style.backgroundColor = '#704F24'
-                   }}>
-                   Add to Cart
-                 </button>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    addToCart(product, 1)
+                  }}
+                  className="w-full bg-[#704F24] text-white border-none rounded-full font-bold cursor-pointer transition-colors duration-300 hover:bg-[#C72A01]"
+                  style={{ padding: '12px', fontSize: '1rem' }}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .w-full {
+            padding-top: 60px !important;
+          }
+          
+          .w-full > div {
+            padding: 15px 10px !important;
+          }
+          
+          .font-["restore"] {
+            font-size: 2rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 10px !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+          }
+          
+          .w-full > div > p {
+            font-size: 1rem !important;
+            margin-bottom: 30px !important;
+          }
+          
+          .grid {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+            padding: 10px 0 !important;
+          }
+          
+          .grid > div {
+            border-radius: 10px !important;
+          }
+          
+          .grid > div > div:first-child {
+            height: 250px !important;
+          }
+          
+          .grid > div > div:last-child {
+            padding: 15px !important;
+          }
+          
+          .grid h3 {
+            font-size: 1.1rem !important;
+          }
+          
+          .grid > div > div:last-child > div {
+            font-size: 1.3rem !important;
+            margin-bottom: 12px !important;
+          }
+          
+          .grid button {
+            padding: 10px !important;
+            font-size: 0.9rem !important;
+          }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .w-full {
+            padding-top: 70px !important;
+          }
+          
+          .w-full > div {
+            padding: 30px 15px !important;
+          }
+          
+          .font-["restore"] {
+            font-size: 4rem !important;
+            line-height: 1.1 !important;
+            margin-bottom: 18px !important;
+          }
+          
+          .grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 25px !important;
+            padding: 15px 0 !important;
+          }
+          
+          .grid > div > div:first-child {
+            height: 350px !important;
+          }
+        }
+        
+        @media (min-width: 1025px) {
+          .w-full {
+            padding-top: 80px !important;
+          }
+          
+          .w-full > div {
+            padding: 40px 20px !important;
+          }
+          
+          .font-["restore"] {
+            font-size: 5rem !important;
+            line-height: 1 !important;
+            margin-bottom: 20px !important;
+          }
+          
+          .grid {
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)) !important;
+            gap: 30px !important;
+            padding: 20px 0 !important;
+          }
+          
+          .grid > div > div:first-child {
+            height: 400px !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

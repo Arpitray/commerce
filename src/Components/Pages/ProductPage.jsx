@@ -71,60 +71,60 @@ function ProductPage() {
   const totalPrice = product.price * quantity
 
   return (
-    <div style={{ paddingTop: '80px', minHeight: '100vh', backgroundColor: '#FEFCDA' }}>
-      <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '50px' }}>
+    <div className="product-page-container" style={{ paddingTop: '50px', minHeight: '100vh', backgroundColor: '#FEFCDA', overflowX: 'hidden', width: '100%' }}>
+      <div className="product-page-content" style={{ margin: '40px 10px', maxWidth: '1200px', width: '100%' }}>
+        <div className="product-layout" style={{ display: 'flex', gap: '40px' }}>
           {/* Product Image */}
-          <div>
-            <div style={{
+          <div className="product-image-section" style={{ width: '50%' }}>
+            <div className="product-image" style={{
               width: '100%',
-              height: '400px',
+              height: '700px',
               backgroundImage: `url(${product.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              backgroundColor: '#f5f5f5',
+              backgroundColor: '#ecf39e',
               borderRadius: '15px'
             }}></div>
           </div>
 
           {/* Product Details */}
-          <div>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '15px', color: '#704F24' }}>
+          <div className="product-details-section" style={{ width: '40%' }}>
+            <h1 className='font-["restore"] product-title' style={{ fontSize: '3.2rem', marginBottom: '15px', color: '#C72A01' }}>
               {product.name}
             </h1>
             
-            <div style={{ marginBottom: '20px' }}>
-              <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#C72A01', marginRight: '15px' }}>
+            <div className="product-price" style={{ marginBottom: '20px' }}>
+              <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#000', marginRight: '15px' }}>
                 ${product.price}
               </span>
             </div>
 
-            <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '30px', color: '#333' }}>
+            <p className='font-["slabo"] font-semibold product-description' style={{ fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '30px', color: '#333' }}>
               {product.description}
             </p>
 
             {/* Product Info */}
-            <div style={{ marginBottom: '25px' }}>
+            <div className='font-semibold text-[#c72a01] text-lg product-info' style={{ marginBottom: '25px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span style={{ color: '#666' }}>Brand:</span>
-                <span style={{ fontWeight: 'bold', color: '#704F24' }}>{product.brand}</span>
+                <span style={{ fontWeight: 'bold' }}>{product.brand}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span style={{ color: '#666' }}>Category:</span>
-                <span style={{ fontWeight: 'bold', color: '#704F24' }}>{product.category}</span>
+                <span style={{ fontWeight: 'bold' }}>{product.category}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span style={{ color: '#666' }}>Rating:</span>
-                <span style={{ fontWeight: 'bold', color: '#704F24' }}>⭐ {product.rating}</span>
+                <span style={{ fontWeight: 'bold' }}>⭐ {product.rating}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span style={{ color: '#666' }}>Stock:</span>
-                <span style={{ fontWeight: 'bold', color: '#704F24' }}>{product.stock} available</span>
+                <span style={{ fontWeight: 'bold' }}>{product.stock} available</span>
               </div>
             </div>
 
             {/* Quantity */}
-            <div style={{ marginBottom: '25px' }}>
+            <div className="quantity-section" style={{ marginBottom: '25px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', color: '#704F24' }}>
                 Quantity
               </h3>
@@ -168,7 +168,7 @@ function ProductPage() {
             </div>
 
             {/* Total Price */}
-            <div style={{ marginBottom: '25px', padding: '15px', backgroundColor: '#f8f8f8', borderRadius: '10px' }}>
+            <div className='rounded-2xl total-price' style={{ marginBottom: '25px', padding: '15px', backgroundColor: '#f8f8f8', borderRadius: '10px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '1.1rem', color: '#666' }}>Total Price:</span>
                 <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#C72A01' }}>
@@ -178,7 +178,7 @@ function ProductPage() {
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '15px', marginBottom: '30px' }}>
+            <div className="action-buttons" style={{ display: 'flex', gap: '15px', marginBottom: '30px' }}>
               <button 
                 onClick={() => addToCart(product, quantity)}
                 style={{
@@ -212,6 +212,109 @@ function ProductPage() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .product-page-container {
+            width: 100% !important;
+            padding-top: 60px !important;
+            overflow-x: hidden !important;
+          }
+          
+          .product-page-content {
+            margin: 20px 10px !important;
+            max-width: 100% !important;
+          }
+          
+          .product-layout {
+            flex-direction: column !important;
+            gap: 30px !important;
+            align-items: center !important;
+          }
+          
+          .product-image-section {
+            width: 100% !important;
+            max-width: 400px !important;
+          }
+          
+          .product-details-section {
+            width: 100% !important;
+            max-width: 400px !important;
+          }
+          
+          .product-image {
+            height: 350px !important;
+          }
+          
+          .product-title {
+            font-size: 2.5rem !important;
+            line-height: 1.1 !important;
+            margin-bottom: 15px !important;
+            text-align: center !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+          }
+          
+          .product-price span {
+            font-size: 1.8rem !important;
+            text-align: center !important;
+          }
+          
+          .product-description {
+            font-size: 1.1rem !important;
+            line-height: 1.6 !important;
+            margin-bottom: 25px !important;
+            text-align: center !important;
+          }
+          
+          .product-info {
+            font-size: 1rem !important;
+            margin-bottom: 10px !important;
+          }
+          
+          .quantity-section h3 {
+            font-size: 1.2rem !important;
+            margin-bottom: 10px !important;
+            text-align: center !important;
+          }
+          
+          .quantity-section button {
+            width: 40px !important;
+            height: 40px !important;
+            font-size: 1.2rem !important;
+          }
+          
+          .quantity-section span {
+            font-size: 1.2rem !important;
+            min-width: 30px !important;
+          }
+          
+          .total-price span:first-child {
+            font-size: 1rem !important;
+          }
+          
+          .total-price span:last-child {
+            font-size: 1.4rem !important;
+          }
+          
+          .action-buttons button {
+            padding: 15px 20px !important;
+            font-size: 1rem !important;
+          }
+          
+          .product-details-section > div {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 15px !important;
+          }
+          
+          .product-details-section > div > div {
+            width: 100% !important;
+            text-align: center !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

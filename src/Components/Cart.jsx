@@ -238,6 +238,183 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
           </div>
         )}
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          div[style*="position: fixed"][style*="right: 0"] {
+            width: 100vw !important;
+            right: 0 !important;
+          }
+          
+          div[style*="position: fixed"][style*="right: -400px"] {
+            width: 100vw !important;
+            right: -100vw !important;
+          }
+          
+          div[style*="padding: 20px"][style*="borderBottom"] {
+            padding: 15px !important;
+          }
+          
+          h2[style*="fontSize: 1.5rem"] {
+            font-size: 1.3rem !important;
+          }
+          
+          div[style*="flex: 1"][style*="overflowY: auto"] {
+            padding: 15px !important;
+          }
+          
+          div[style*="display: flex"][style*="gap: 15px"] {
+            gap: 10px !important;
+            padding: 10px 0 !important;
+          }
+          
+          div[style*="width: 80px"][style*="height: 80px"] {
+            width: 60px !important;
+            height: 60px !important;
+          }
+          
+          h3[style*="fontSize: 1rem"] {
+            font-size: 0.9rem !important;
+          }
+          
+          p[style*="fontSize: 1.1rem"][style*="color: #C72A01"] {
+            font-size: 1rem !important;
+          }
+          
+          div[style*="padding: 20px"][style*="borderTop"] {
+            padding: 15px !important;
+          }
+          
+          span[style*="fontSize: 1.2rem"] {
+            font-size: 1.1rem !important;
+          }
+          
+          span[style*="fontSize: 1.5rem"][style*="color: #C72A01"] {
+            font-size: 1.3rem !important;
+          }
+          
+          button[style*="padding: 15px"][style*="fontSize: 1.1rem"] {
+            padding: 12px !important;
+            font-size: 1rem !important;
+          }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+          div[style*="position: fixed"][style*="right: 0"] {
+            width: 450px !important;
+          }
+          
+          div[style*="position: fixed"][style*="right: -400px"] {
+            width: 450px !important;
+            right: -450px !important;
+          }
+          
+          div[style*="padding: 20px"][style*="borderBottom"] {
+            padding: 25px !important;
+          }
+          
+          h2[style*="fontSize: 1.5rem"] {
+            font-size: 1.6rem !important;
+          }
+          
+          div[style*="flex: 1"][style*="overflowY: auto"] {
+            padding: 25px !important;
+          }
+          
+          div[style*="display: flex"][style*="gap: 15px"] {
+            gap: 20px !important;
+            padding: 20px 0 !important;
+          }
+          
+          div[style*="width: 80px"][style*="height: 80px"] {
+            width: 90px !important;
+            height: 90px !important;
+          }
+          
+          h3[style*="fontSize: 1rem"] {
+            font-size: 1.1rem !important;
+          }
+          
+          p[style*="fontSize: 1.1rem"][style*="color: #C72A01"] {
+            font-size: 1.2rem !important;
+          }
+          
+          div[style*="padding: 20px"][style*="borderTop"] {
+            padding: 25px !important;
+          }
+          
+          span[style*="fontSize: 1.2rem"] {
+            font-size: 1.3rem !important;
+          }
+          
+          span[style*="fontSize: 1.5rem"][style*="color: #C72A01"] {
+            font-size: 1.6rem !important;
+          }
+          
+          button[style*="padding: 15px"][style*="fontSize: 1.1rem"] {
+            padding: 18px !important;
+            font-size: 1.2rem !important;
+          }
+        }
+        
+        @media (min-width: 1025px) {
+          div[style*="position: fixed"][style*="right: 0"] {
+            width: 400px !important;
+          }
+          
+          div[style*="position: fixed"][style*="right: -400px"] {
+            width: 400px !important;
+            right: -400px !important;
+          }
+          
+          div[style*="padding: 20px"][style*="borderBottom"] {
+            padding: 20px !important;
+          }
+          
+          h2[style*="fontSize: 1.5rem"] {
+            font-size: 1.5rem !important;
+          }
+          
+          div[style*="flex: 1"][style*="overflowY: auto"] {
+            padding: 20px !important;
+          }
+          
+          div[style*="display: flex"][style*="gap: 15px"] {
+            gap: 15px !important;
+            padding: 15px 0 !important;
+          }
+          
+          div[style*="width: 80px"][style*="height: 80px"] {
+            width: 80px !important;
+            height: 80px !important;
+          }
+          
+          h3[style*="fontSize: 1rem"] {
+            font-size: 1rem !important;
+          }
+          
+          p[style*="fontSize: 1.1rem"][style*="color: #C72A01"] {
+            font-size: 1.1rem !important;
+          }
+          
+          div[style*="padding: 20px"][style*="borderTop"] {
+            padding: 20px !important;
+          }
+          
+          span[style*="fontSize: 1.2rem"] {
+            font-size: 1.2rem !important;
+          }
+          
+          span[style*="fontSize: 1.5rem"][style*="color: #C72A01"] {
+            font-size: 1.5rem !important;
+          }
+          
+          button[style*="padding: 15px"][style*="fontSize: 1.1rem"] {
+            padding: 15px !important;
+            font-size: 1.1rem !important;
+          }
+        }
+      `}</style>
     </>
   )
 }

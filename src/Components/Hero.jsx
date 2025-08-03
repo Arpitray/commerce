@@ -13,33 +13,50 @@ function Hero() {
 
     if (!logo) return
 
-    gsap.set(logo, {
-      fontSize: '25rem',
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      xPercent: -50,
-      yPercent: -50,
-      zIndex: 100
-    })
+    // Check if mobile device
+    const isMobile = window.innerWidth <= 768
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top top',
-        end: 'bottom 520%',
-        scrub: true
-      }
-    })
+    // Only apply animations if not mobile
+    if (!isMobile) {
+      gsap.set(logo, {
+        fontSize: '25rem',
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        xPercent: -50,
+        yPercent: -50,
+        zIndex: 100
+      })
 
-    tl.to(logo, {
-      fontSize: '2rem',
-      top: '0.5rem',
-      left: '2rem',
-      xPercent: 0,
-      yPercent: 0,
-      duration: 1
-    })
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: document.body,
+          start: 'top top',
+          end: 'bottom 520%',
+          scrub: true
+        }
+      })
+
+      tl.to(logo, {
+        fontSize: '2rem',
+        top: '0.5rem',
+        left: '2rem',
+        xPercent: 0,
+        yPercent: 0,
+        duration: 1
+      })
+    } else {
+      // Mobile: static positioning without animation
+      gsap.set(logo, {
+        fontSize: '2rem',
+        position: 'fixed',
+        top: '0.5rem',
+        left: '2rem',
+        xPercent: 0,
+        yPercent: 0,
+        zIndex: 100
+      })
+    }
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
@@ -67,7 +84,7 @@ function Hero() {
           ref={logoRef}
           className="text-[#C72A01] select-none font-['restore']"
         >
-          SUMMOR.
+          SUMMOR<span className='text-[#FFF8DC]'>.</span>
         </div>
       </div>
     </div>
