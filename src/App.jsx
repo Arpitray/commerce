@@ -5,6 +5,7 @@ import Home from './Components/Pages/Home'
 import Categories from './Components/Pages/Categories'
 import CategoryPage from './Components/Pages/CategoryPage'
 import ProductPage from './Components/Pages/ProductPage'
+import Contact from './Components/Contact'
 import Cart from './Components/Cart'
 import LoadingScreen from './Components/LoadingScreen'
 import { CartProvider, useCart } from './context/CartContext'
@@ -20,6 +21,7 @@ function AppContent() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/category/:categoryId" element={<CategoryPage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Cart 
         isOpen={isCartOpen}

@@ -79,7 +79,7 @@ function Navbar() {
   const navLinks = [
     { id: 'home', text: 'Home', to: '/' },
     { id: 'categories', text: 'Categories', to: '/categories' },
-    { id: 'contact', text: 'Contact', to: '#' }
+    { id: 'contact', text: 'Contact', to: '/contact' }
   ]
 
   return (
