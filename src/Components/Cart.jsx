@@ -60,32 +60,28 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
                 color: 'white',
                 cursor: 'pointer',
                 padding: '5px',
-                boxShadow: 'rgb(201, 46, 70) 0px 10px 0px 0px',
                 transition: 'all 0.3s ease'
               }}
               onMouseEnter={(e) => {
                 const button = e.currentTarget;
-                button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
               }}
               onMouseLeave={(e) => {
                 const button = e.currentTarget;
-                button.style.boxShadow = 'rgb(201, 46, 70) 0px 10px 0px 0px';
                 button.style.transform = 'translateY(0)';
               }}
               onMouseDown={(e) => {
                 const button = e.currentTarget;
-                button.style.boxShadow = 'rgb(201, 46, 70) 0px 0px 0px 0px';
+                
                 button.style.transform = 'translateY(5px)';
                 button.style.transition = '200ms';
               }}
               onMouseUp={(e) => {
                 const button = e.currentTarget;
-                button.style.boxShadow = 'rgb(201, 46, 70) 0px 7px 0px 0px';
                 button.style.transform = 'translateY(3px)';
                 button.style.transition = 'all 0.3s ease';
               }}
             >
-              ×
+              <span style={{ fontSize: '1.5rem', lineHeight: 0 }}>✖</span>
             </button>
           </div>
         </div>

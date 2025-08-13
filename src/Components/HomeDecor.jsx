@@ -58,7 +58,7 @@ function HomeDecor() {
           Home Decor That Tells Your Story
         </div>
         <div 
-          className="text-base md:text-2xl lg:text-3xl w-full text-start md:text-end font-['slabo'] font-semibold break-words"
+          className="text-base md:text-2xl lg:text-3xl w-full text-start font-['slabo'] font-semibold break-words"
           style={{color: '#666', paddingLeft: '0px'}}
         >
           Transform your living space with our exquisite collection of home decor. From elegant wall art to cozy textiles, each piece is carefully selected to reflect your unique style and create a home that truly feels like you.

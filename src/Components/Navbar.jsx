@@ -13,6 +13,7 @@ function Navbar() {
   const [hoveredLink, setHoveredLink] = useState(null)
   const [isVisible, setIsVisible] = useState(true)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMobileViewport, setIsMobileViewport] = useState(false)
   const lastScrollY = useRef(0)
 
   useEffect(() => {
@@ -61,6 +62,20 @@ function Navbar() {
     }
   }, [])
 
+  // Track viewport size and ensure mobile menu is closed on desktop
+  useEffect(() => {
+    const updateViewport = () => {
+      const isMobile = window.innerWidth < 768
+      setIsMobileViewport(isMobile)
+      if (!isMobile && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+    updateViewport()
+    window.addEventListener('resize', updateViewport)
+    return () => window.removeEventListener('resize', updateViewport)
+  }, [isMobileMenuOpen])
+
   const navLinks = [
     { id: 'home', text: 'Home', to: '/' },
     { id: 'categories', text: 'Categories', to: '/categories' },
@@ -70,26 +85,59 @@ function Navbar() {
   return (
     <nav 
       ref={navbarRef}
-      className={`fixed top-0 left-0 right-0 z-50 h-16 bg-[#64351f] backdrop-blur-xl transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-[#64351f] backdrop-blur-xl transition-all duration-300 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
-      style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.1)' }}
+      style={{ 
+        height: '64px',
+        boxShadow: '0 2px 20px rgba(0,0,0,0.1)',
+        display: 'flex',
+        alignItems: 'center'
+      }}
     >
-      <div style={{paddingLeft: "16px", paddingRight: "16px"}} className="flex items-center justify-between h-full">
+      <div 
+        style={{
+          paddingLeft: "16px", 
+          paddingRight: "16px",
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-12 gap-12 justify-center w-full text-[#FEFCDA]  font-bold font-['slabo']">
+        <ul 
+          className="hidden md:flex text-[#FEFCDA] font-bold font-['slabo']"
+          style={{
+            listStyle: 'none',
+            margin: 0,
+            padding: 0,
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '3rem',
+            flex: 1
+          }}
+        >
           {navLinks.map((link) => (
-            <li key={link.id}>
+            <li key={link.id} style={{ margin: 0, padding: 0 }}>
               <Link
                 to={link.to}
-                className={`transition-all duration-300 text-xl ${
+                className={`transition-all duration-300 ${
                   hoveredLink && hoveredLink !== link.id 
                     ? 'opacity-20' 
                     : 'opacity-100'
                 } hover:opacity-100 hover:scale-105`}
                 onMouseEnter={() => setHoveredLink(link.id)}
                 onMouseLeave={() => setHoveredLink(null)}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ 
+                  textDecoration: 'none', 
+                  color: 'inherit',
+                  fontSize: '1.25rem',
+                  fontWeight: 'bold',
+                  display: 'block',
+                  padding: '0.5rem 1rem'
+                }}
               >
                 {link.text}
               </Link>
@@ -98,25 +146,26 @@ function Navbar() {
         </ul>
         
         {/* Mobile Menu Button */}
-        <button
-          className="md:hidden block"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'black',
-            fontSize: '1.5rem',
-            cursor: 'pointer',
-            padding: '8px',
-            borderRadius: '50%',
-            transition: 'all 0.3s ease'
-          }}
-        >
-          {isMobileMenuOpen ? '✕' : '☰'}
-        </button>
+        {isMobileViewport && (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#FEFCDA',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              padding: '8px',
+              borderRadius: '50%',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            {isMobileMenuOpen ? '✕' : '☰'}
+          </button>
+        )}
         
         {/* Cart Icon */}
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <button
             onClick={() => setIsCartOpen(true)}
             style={{
@@ -128,12 +177,6 @@ function Navbar() {
               padding: '8px',
               borderRadius: '50%',
               transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent'
             }}
           >
             <img src={Cart} alt="Menu" style={{ width: '24px', height: '24px' }} />
@@ -161,9 +204,9 @@ function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
+      {isMobileMenuOpen && isMobileViewport && (
         <div 
-          className="md:hidden block"
+          className="mobile-menu-dropdown"
           style={{
             position: 'absolute',
             top: '100%',
@@ -213,19 +256,7 @@ function Navbar() {
           </ul>
         </div>
       )}
-
-      <style>{`
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+    
     </nav>
   )
 }

@@ -101,7 +101,8 @@ function Categories() {
 
   return (
     <>
-      <div className='w-full' style={{ paddingTop: '80px', minHeight: '100vh', backgroundColor: '#FEFCDA' }}>
+      {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
+      <div className='w-full min-h-screen' style={{ paddingTop: '64px', backgroundColor: '#FEFCDA' }}>
         <div style={{ padding: '40px 20px', margin: '0 auto' }}>
           <h1 className='font-["restore"]' style={{ 
             fontSize: '5rem', 
@@ -226,7 +227,6 @@ function Categories() {
           </div>
         </div>
       </div>
-      {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
 
       <style>{`
         @media (max-width: 768px) {
