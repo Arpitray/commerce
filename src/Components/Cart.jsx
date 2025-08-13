@@ -1,7 +1,45 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+
+  // Lock body scroll when cart is open
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow
+    const previousHtmlOverflow = document.documentElement.style.overflow
+    const previousBodyPosition = document.body.style.position
+    const previousBodyTop = document.body.style.top
+    const previousBodyWidth = document.body.style.width
+    let scrollYBeforeOpen = window.scrollY
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollYBeforeOpen}px`
+      document.body.style.width = '100%'
+    } else {
+      document.body.style.overflow = previousBodyOverflow || ''
+      document.documentElement.style.overflow = previousHtmlOverflow || ''
+      document.body.style.position = previousBodyPosition || ''
+      document.body.style.top = previousBodyTop || ''
+      document.body.style.width = previousBodyWidth || ''
+      if (previousBodyTop) {
+        const y = parseInt(previousBodyTop.replace('px', '')) || 0
+        window.scrollTo(0, -y)
+      }
+    }
+    return () => {
+      document.body.style.overflow = previousBodyOverflow || ''
+      document.documentElement.style.overflow = previousHtmlOverflow || ''
+      document.body.style.position = previousBodyPosition || ''
+      document.body.style.top = previousBodyTop || ''
+      document.body.style.width = previousBodyWidth || ''
+      if (previousBodyTop) {
+        const y = parseInt(previousBodyTop.replace('px', '')) || 0
+        window.scrollTo(0, -y)
+      }
+    }
+  }, [isOpen])
 
   return (
     <>
@@ -16,9 +54,12 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
             bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             zIndex: 1000,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            touchAction: 'none'
           }}
           onClick={onClose}
+          onWheel={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          onTouchMove={(e) => { e.preventDefault(); e.stopPropagation(); }}
         />
       )}
       
@@ -34,7 +75,9 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
         zIndex: 1001,
         transition: 'right 0.3s ease',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overscrollBehavior: 'contain',
+        minHeight: 0
       }}>
         {/* Cart Header */}
         <div style={{
@@ -90,8 +133,14 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
         <div style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '20px'
-        }}>
+          padding: '20px',
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch',
+          minHeight: 0,
+          touchAction: 'pan-y'
+        }}
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}>
           {cartItems.length === 0 ? (
             <div style={{
               textAlign: 'center',

@@ -97,6 +97,9 @@ function Hero() {
         <div 
           ref={logoRef}
           className="text-[#C72A01] select-none font-['restore'] md:fixed md:block relative z-[100]"
+          onClick={() => window.location.reload()}
+          style={{ cursor: 'pointer' }}
+          title="Refresh"
         >
           SUMMOR<span className='text-[#FFF8DC]'>.</span>
         </div>
