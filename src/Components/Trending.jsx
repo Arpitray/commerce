@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
+import OptimizedLazyImage from './OptimizedLazyImage'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -215,14 +216,9 @@ function Trending() {
                   willChange: 'transform'
                 }}
               >
-                <img 
+                <OptimizedLazyImage
                   src={product.images[0]} 
                   alt={product.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
                   onError={(e) => {
                     e.target.src = 'https://via.placeholder.com/300x200?text=Furniture+Decor'
                   }}

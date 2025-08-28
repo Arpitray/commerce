@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
+import OptimizedLazyImage from '../OptimizedLazyImage'
 
 function ProductPage() {
   const { productId } = useParams()
@@ -79,12 +80,15 @@ function ProductPage() {
             <div className="product-image" style={{
               width: '100%',
               height: '700px',
-              backgroundImage: `url(${product.image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
               backgroundColor: '#ecf39e',
-              borderRadius: '15px'
-            }}></div>
+              borderRadius: '15px',
+              overflow: 'hidden'
+            }}>
+              <OptimizedLazyImage
+                src={product.image}
+                alt={product.name}
+              />
+            </div>
           </div>
 
           {/* Product Details */}
