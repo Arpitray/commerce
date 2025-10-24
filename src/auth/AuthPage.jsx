@@ -70,30 +70,17 @@ const handleAuth = async (e) => {
     }
 
     if (forgotPassword) {
-      // Get the proper redirect URL - use production URL if in production, or current origin for local dev
-      const getRedirectUrl = () => {
-        // If you have a production URL, use it
-        const productionUrl = import.meta.env.VITE_PRODUCTION_URL;
-        
-        if (productionUrl) {
-          return productionUrl;
-        }
-        
-        // For local development, try to get a mobile-accessible URL
-        const currentOrigin = window.location.origin;
-        
-        // If using localhost, try to use the local network IP instead
-        if (currentOrigin.includes('localhost')) {
-          // Replace localhost with your actual local IP for mobile access
-          const localIP = '192.168.29.132'; // Your actual local IP
-          return currentOrigin.replace('localhost', localIP);
-        }
-        
-        return currentOrigin;
-      };
+      // Always use production URL for password reset emails to ensure mobile compatibility
+      const productionUrl = import.meta.env.VITE_PRODUCTION_URL;
+      
+      if (!productionUrl) {
+        setError('Production URL not configured. Please contact support.')
+        setLoading(false)
+        return
+      }
         
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${getRedirectUrl()}/auth`,
+        redirectTo: `${productionUrl}/auth`,
       })
       if (error) setError(error.message)
       else setMessage('Check your email for the password reset link!')
