@@ -9,12 +9,14 @@ import Contact from './Components/Contact'
 import Cart from './Components/Cart'
 import LoadingScreen from './Components/LoadingScreen'
 import { CartProvider, useCart } from './context/CartContext'
+import ProtectedRoute from './auth/ProtectedRoute'
 
 function AppContent() {
   const { cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart } = useCart()
 
   return (
     <>
+    <ProtectedRoute>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -30,6 +32,7 @@ function AppContent() {
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeFromCart}
       />
+      </ProtectedRoute>
     </>
   )
 }

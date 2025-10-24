@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Cart from '../assets/cart.png'
 import { useCart } from '../context/CartContext'
+import { supabase } from '../lib/supabaseClient'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -15,6 +16,11 @@ function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobileViewport, setIsMobileViewport] = useState(false)
   const lastScrollY = useRef(0)
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    window.location.reload()
+  }
 
   useEffect(() => {
     const navbar = navbarRef.current
@@ -256,7 +262,12 @@ function Navbar() {
           </ul>
         </div>
       )}
-    
+     <button
+        onClick={handleLogout}
+        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg"
+      >
+        Logout
+      </button>
     </nav>
   )
 }
