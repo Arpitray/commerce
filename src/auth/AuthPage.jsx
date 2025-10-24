@@ -24,17 +24,51 @@ export default function AuthPage() {
     const refresh_token = searchParams.get('refresh_token')
     const type = searchParams.get('type')
 
-    if (access_token && refresh_token && type === 'recovery') {
+    console.log('URL Params:', { access_token, refresh_token, type })
+    console.log('Current URL:', window.location.href)
+    console.log('Search Params:', window.location.search)
+
+    // Also check hash fragments (Supabase might use these)
+    const hash = window.location.hash
+    console.log('Hash:', hash)
+    
+    let hashParams = {}
+    if (hash) {
+      const hashString = hash.substring(1) // remove #
+      const params = new URLSearchParams(hashString)
+      hashParams = {
+        access_token: params.get('access_token'),
+        refresh_token: params.get('refresh_token'),
+        type: params.get('type')
+      }
+      console.log('Hash Params:', hashParams)
+    }
+
+    // Check both search params and hash params
+    const finalParams = {
+      access_token: access_token || hashParams.access_token,
+      refresh_token: refresh_token || hashParams.refresh_token,
+      type: type || hashParams.type
+    }
+
+    console.log('Final Params:', finalParams)
+
+    if (finalParams.access_token && finalParams.refresh_token && finalParams.type === 'recovery') {
+      console.log('Password reset detected! Switching to reset mode.')
       // User clicked the reset link, show password reset form
       setIsResettingPassword(true)
       setForgotPassword(false)
       setIsSignUp(false)
+      setError('')
+      setMessage('')
       
       // Set the session
       supabase.auth.setSession({
-        access_token,
-        refresh_token
+        access_token: finalParams.access_token,
+        refresh_token: finalParams.refresh_token
       })
+    } else {
+      console.log('No password reset detected')
     }
   }, [searchParams])
 
@@ -180,7 +214,7 @@ const handleAuth = async (e) => {
       {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center" style={{ padding: '40px 20px' }}>
         <div className="w-full max-w-md">
-          {/* Header */}
+            {/* Header */}
           <div className="text-center" style={{ marginBottom: '40px' }}>
             <h1 className="text-3xl font-bold text-gray-900" style={{ marginBottom: '8px' }}>
               {isResettingPassword
@@ -202,9 +236,22 @@ const handleAuth = async (e) => {
                 : 'Discover fun, interactive stories that spark your child\'s imagination.'
               }
             </p>
-          </div>
-
-          {/* Form */}
+            
+            {/* Debug info - remove in production */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="mt-4 p-2 bg-gray-100 rounded text-xs">
+                <p>Debug: isResettingPassword = {String(isResettingPassword)}</p>
+                <p>Debug: forgotPassword = {String(forgotPassword)}</p>
+                <p>Debug: URL = {window.location.href}</p>
+                <button 
+                  onClick={() => setIsResettingPassword(true)}
+                  className="mt-1 px-2 py-1 bg-blue-500 text-white rounded text-xs"
+                >
+                  Test Reset Mode
+                </button>
+              </div>
+            )}
+          </div>          {/* Form */}
           <form onSubmit={handleAuth} className="space-y-4">
             {/* Email Field - only show for signup, login, and forgot password */}
             {!isResettingPassword && (
@@ -237,7 +284,7 @@ const handleAuth = async (e) => {
                       className="text-sm text-gray-500 hover:text-gray-700"
                       onClick={() => setForgotPassword(true)}
                     >
-                      Forgot password?
+                    
                     </button>
                   )}
                 </div>
