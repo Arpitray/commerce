@@ -1,7 +1,15 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
+  const navigate = useNavigate()
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+
+  // Handle clicking on a cart item to navigate to product page
+  const handleItemClick = (productId) => {
+    navigate(`/product/${productId}`)
+    onClose() // Close the cart when navigating
+  }
 
   // Lock body scroll when cart is open
   useEffect(() => {
@@ -159,14 +167,25 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
                 padding: '15px 0',
                 borderBottom: '1px solid #eee'
               }}>
-                {/* Product Image */}
-                <div style={{
-                  width: '80px',
-                  height: '80px',
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  flexShrink: 0
-                }}>
+                {/* Product Image - Clickable */}
+                <div 
+                  onClick={() => handleItemClick(item.id)}
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    flexShrink: 0,
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)'
+                  }}
+                >
                   <img
                     src={item.image}
                     alt={item.name}
@@ -180,12 +199,24 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
 
                 {/* Product Details */}
                 <div style={{ flex: 1 }}>
-                  <h3 style={{
-                    fontSize: '1rem',
-                    fontWeight: 'bold',
-                    margin: '0 0 5px 0',
-                    color: '#704F24'
-                  }}>
+                  {/* Product Name - Clickable */}
+                  <h3 
+                    onClick={() => handleItemClick(item.id)}
+                    style={{
+                      fontSize: '1rem',
+                      fontWeight: 'bold',
+                      margin: '0 0 5px 0',
+                      color: '#704F24',
+                      cursor: 'pointer',
+                      transition: 'color 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = '#C72A01'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = '#704F24'
+                    }}
+                  >
                     {item.name}
                   </h3>
                   <p style={{

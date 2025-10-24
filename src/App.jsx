@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './Components/Navbar'
 import Home from './Components/Pages/Home'
 import Categories from './Components/Pages/Categories'
@@ -52,6 +52,18 @@ function App() {
   const handleLoadingComplete = () => {
     setIsLoading(false)
   }
+
+  // Safety timeout to ensure loading screen doesn't hang forever
+  useEffect(() => {
+    const safetyTimeout = setTimeout(() => {
+      if (isLoading) {
+        console.warn('Loading screen timeout reached, forcing hide')
+        setIsLoading(false)
+      }
+    }, 5000) // 5 second timeout
+
+    return () => clearTimeout(safetyTimeout)
+  }, [isLoading])
 
   return (
     <CartProvider>

@@ -8,26 +8,41 @@ const LoadingScreen = ({ onComplete }) => {
   useEffect(() => {
     const loading = loadingRef.current;
     if (!loading) return;
-
     // Timeline for the loading animation
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setIsVisible(false);
-        onComplete && onComplete();
-      }
-    });
+    try {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setIsVisible(false);
+          onComplete && onComplete();
+        }
+      });
 
-    // Stay for 2 seconds
-    tl.to(loading, {
-      duration: 2,
-      ease: 'none'
-    })
-    // Go up smoothly
-    .to(loading, {
-      y: '-100vh',
-      duration: 1,
-      ease: 'power2.in'
-    });
+      // Stay for 2 seconds then animate away
+      tl.to(loading, {
+        duration: 2,
+        ease: 'none'
+      })
+      .to(loading, {
+        y: '-100vh',
+        duration: 1,
+        ease: 'power2.in'
+      });
+
+      // Safety fallback: if GSAP somehow doesn't call onComplete, ensure we hide after 4s
+      const safety = setTimeout(() => {
+        if (isVisible) {
+          setIsVisible(false);
+          onComplete && onComplete();
+        }
+      }, 4000);
+
+      return () => clearTimeout(safety);
+    } catch (err) {
+      console.error('Loading animation failed, proceeding anyway:', err);
+      // Ensure the loading screen is removed even if animation fails
+      setIsVisible(false);
+      onComplete && onComplete();
+    }
 
   }, [onComplete]);
 
