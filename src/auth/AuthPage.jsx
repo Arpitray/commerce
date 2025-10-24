@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 export default function AuthPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -11,6 +13,30 @@ export default function AuthPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [forgotPassword, setForgotPassword] = useState(false)
+  const [isResettingPassword, setIsResettingPassword] = useState(false)
+  
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    // Check if this is a password reset callback
+    const access_token = searchParams.get('access_token')
+    const refresh_token = searchParams.get('refresh_token')
+    const type = searchParams.get('type')
+
+    if (access_token && refresh_token && type === 'recovery') {
+      // User clicked the reset link, show password reset form
+      setIsResettingPassword(true)
+      setForgotPassword(false)
+      setIsSignUp(false)
+      
+      // Set the session
+      supabase.auth.setSession({
+        access_token,
+        refresh_token
+      })
+    }
+  }, [searchParams])
 
 const handleAuth = async (e) => {
   e.preventDefault()
@@ -19,23 +45,62 @@ const handleAuth = async (e) => {
   setMessage('')
 
   try {
-    if (forgotPassword) {
+    if (isResettingPassword) {
+      // Handle password reset
+      if (password !== confirmPassword) {
+        setError('Passwords do not match')
+        setLoading(false)
+        return
+      }
+      
+      if (password.length < 6) {
+        setError('Password must be at least 6 characters long')
+        setLoading(false)
+        return
+      }
+
+      const { error } = await supabase.auth.updateUser({
+        password: password
+      })
+
+      if (error) {
+        setError(error.message)
+      } else {
+        setMessage('Password updated successfully! Redirecting to home...')
+        // Redirect to home page after successful reset
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
+      }
+    } else if (forgotPassword) {
+      // Handle forgot password
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/auth`,
       })
       if (error) setError(error.message)
-      else setMessage('Check your email to reset your password!')
+      else setMessage('Check your email for the password reset link!')
     } else {
+      // Handle login/signup
       const { error } = isSignUp
         ? await supabase.auth.signUp({ email, password })
         : await supabase.auth.signInWithPassword({ email, password })
 
-      if (error) setError(error.message)
-      else setMessage(
-        isSignUp
-          ? 'Check your email for confirmation!'
-          : 'Logged in successfully!'
-      )
+      if (error) {
+        setError(error.message)
+      } else {
+        setMessage(
+          isSignUp
+            ? 'Check your email for confirmation!'
+            : 'Logged in successfully! Redirecting...'
+        )
+        
+        if (!isSignUp) {
+          // Redirect to home page after successful login
+          setTimeout(() => {
+            navigate('/')
+          }, 1500)
+        }
+      }
     }
   } catch (err) {
     setError(err.message)
@@ -117,7 +182,9 @@ const handleAuth = async (e) => {
           {/* Header */}
           <div className="text-center" style={{ marginBottom: '40px' }}>
             <h1 className="text-3xl font-bold text-gray-900" style={{ marginBottom: '8px' }}>
-              {forgotPassword 
+              {isResettingPassword
+                ? 'Set New Password'
+                : forgotPassword 
                 ? 'Reset Your Password' 
                 : isSignUp 
                 ? 'Create Your Account' 
@@ -125,7 +192,9 @@ const handleAuth = async (e) => {
               }
             </h1>
             <p className="text-gray-600 text-sm">
-              {forgotPassword 
+              {isResettingPassword
+                ? 'Enter your new password below. Make sure it\'s strong and secure.'
+                : forgotPassword 
                 ? 'Enter your email address and we\'ll send you a link to reset your password.'
                 : isSignUp 
                 ? 'Join our community and start your journey' 
@@ -136,30 +205,32 @@ const handleAuth = async (e) => {
 
           {/* Form */}
           <form onSubmit={handleAuth} className="space-y-4">
-            {/* Email Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700" style={{ marginBottom: '6px' }}>
-                Email address
-              </label>
-              <input
-                type="email"
-                placeholder="amelia@mail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all"
-                style={{ padding: '12px 16px' }}
-              />
-            </div>
+            {/* Email Field - only show for signup, login, and forgot password */}
+            {!isResettingPassword && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700" style={{ marginBottom: '6px' }}>
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  placeholder="amelia@mail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all"
+                  style={{ padding: '12px 16px' }}
+                />
+              </div>
+            )}
 
-            {/* Password Field */}
-            {!forgotPassword && (
+            {/* Password Field - for login, signup, and password reset */}
+            {(!forgotPassword || isResettingPassword) && (
               <div>
                 <div className="flex justify-between items-center" style={{ marginBottom: '6px' }}>
                   <label className="block text-sm font-medium text-gray-700">
-                    Password
+                    {isResettingPassword ? 'New Password' : 'Password'}
                   </label>
-                  {!isSignUp && (
+                  {!isSignUp && !isResettingPassword && (
                     <button
                       type="button"
                       className="text-sm text-gray-500 hover:text-gray-700"
@@ -172,7 +243,7 @@ const handleAuth = async (e) => {
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Amita@4218"
+                    placeholder={isResettingPassword ? "Enter new password" : "Amita@4218"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -187,6 +258,24 @@ const handleAuth = async (e) => {
                     {showPassword ? '🙈' : '👁️'}
                   </button>
                 </div>
+              </div>
+            )}
+
+            {/* Confirm Password Field - only for password reset */}
+            {isResettingPassword && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700" style={{ marginBottom: '6px' }}>
+                  Confirm New Password
+                </label>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="w-full border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all"
+                  style={{ padding: '12px 16px' }}
+                />
               </div>
             )}
 
@@ -227,6 +316,8 @@ const handleAuth = async (e) => {
             >
               {loading 
                 ? 'Please wait...' 
+                : isResettingPassword
+                ? 'Update Password'
                 : forgotPassword 
                 ? 'Send Reset Link'
                 : isSignUp 
@@ -236,13 +327,16 @@ const handleAuth = async (e) => {
             </button>
 
             {/* Back to Login Button for Forgot Password */}
-            {forgotPassword && (
+            {(forgotPassword || isResettingPassword) && (
               <button
                 type="button"
                 onClick={() => {
                   setForgotPassword(false)
+                  setIsResettingPassword(false)
                   setError('')
                   setMessage('')
+                  setPassword('')
+                  setConfirmPassword('')
                 }}
                 className="w-full text-amber-600 hover:text-amber-700 font-medium transition-all duration-200"
                 style={{ padding: '8px 16px' }}
@@ -253,7 +347,7 @@ const handleAuth = async (e) => {
           </form>
 
           {/* Divider */}
-          {!forgotPassword && (
+          {!forgotPassword && !isResettingPassword && (
             <div className="flex items-center" style={{ margin: '24px 0' }}>
               <div className="flex-1 border-t border-gray-300"></div>
               <span className="px-3 text-sm text-gray-500">Or</span>
@@ -262,7 +356,7 @@ const handleAuth = async (e) => {
           )}
 
           {/* Social Login Buttons */}
-          {!forgotPassword && (
+          {!forgotPassword && !isResettingPassword && (
             <div className="space-y-3">
               <button
                 type="button"
@@ -282,7 +376,7 @@ const handleAuth = async (e) => {
           )}
 
           {/* Footer */}
-          {!forgotPassword && (
+          {!forgotPassword && !isResettingPassword && (
             <div className="text-center" style={{ marginTop: '24px' }}>
               <span className="text-sm text-gray-600">
                 {isSignUp ? 'Already have an account? ' : "Don't have an account? "}

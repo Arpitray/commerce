@@ -8,6 +8,7 @@ import ProductPage from './Components/Pages/ProductPage'
 import Contact from './Components/Contact'
 import Cart from './Components/Cart'
 import LoadingScreen from './Components/LoadingScreen'
+import AuthPage from './auth/AuthPage'
 import { CartProvider, useCart } from './context/CartContext'
 import ProtectedRoute from './auth/ProtectedRoute'
 
@@ -16,23 +17,31 @@ function AppContent() {
 
   return (
     <>
-    <ProtectedRoute>
-      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/category/:categoryId" element={<CategoryPage />} />
-        <Route path="/product/:productId" element={<ProductPage />} />
-        <Route path="/contact" element={<Contact />} />
+        {/* Auth route - accessible without protection */}
+        <Route path="/auth" element={<AuthPage />} />
+        
+        {/* Protected routes */}
+        <Route path="/*" element={
+          <ProtectedRoute>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route path="/category/:categoryId" element={<CategoryPage />} />
+              <Route path="/product/:productId" element={<ProductPage />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+            <Cart 
+              isOpen={isCartOpen}
+              onClose={() => setIsCartOpen(false)}
+              cartItems={cartItems}
+              onUpdateQuantity={updateQuantity}
+              onRemoveItem={removeFromCart}
+            />
+          </ProtectedRoute>
+        } />
       </Routes>
-      <Cart 
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cartItems}
-        onUpdateQuantity={updateQuantity}
-        onRemoveItem={removeFromCart}
-      />
-      </ProtectedRoute>
     </>
   )
 }
