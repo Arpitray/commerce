@@ -11,6 +11,7 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
     onClose() // Close the cart when navigating
   }
 
+
   // Lock body scroll when cart is open
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow
@@ -385,6 +386,7 @@ function Cart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
               </span>
             </div>
             <button style={{
+              
               width: '100%',
               padding: '15px',
               backgroundColor: '#C72A01',
