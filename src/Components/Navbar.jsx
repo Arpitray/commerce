@@ -15,6 +15,7 @@ function Navbar() {
   const [isVisible, setIsVisible] = useState(true)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobileViewport, setIsMobileViewport] = useState(false)
+  const [user, setUser] = useState(null)
   const lastScrollY = useRef(0)
 
   const handleLogout = async () => {
@@ -23,22 +24,28 @@ function Navbar() {
   }
 
   useEffect(() => {
-    const navbar = navbarRef.current
+    // Get user session
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
+    }
+    getUser()
 
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    const navbar = navbarRef.current
     if (!navbar) return
 
     // Navbar visibility logic
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      
       if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-        // Scrolling down and past 100px
         setIsVisible(false)
       } else {
-        // Scrolling up
         setIsVisible(true)
       }
-      
       lastScrollY.current = currentScrollY
     }
 
@@ -65,10 +72,11 @@ function Navbar() {
     return () => {
       window.removeEventListener('scroll', handleScroll)
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      authListener.subscription.unsubscribe()
     }
   }, [])
 
-  // Track viewport size and ensure mobile menu is closed on desktop
+  // Track viewport size
   useEffect(() => {
     const updateViewport = () => {
       const isMobile = window.innerWidth < 768
@@ -151,61 +159,79 @@ function Navbar() {
           ))}
         </ul>
         
-        {/* Mobile Menu Button */}
-        {isMobileViewport && (
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#FEFCDA',
-              fontSize: '1.5rem',
-              cursor: 'pointer',
-              padding: '8px',
-              borderRadius: '50%',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            {isMobileMenuOpen ? '✕' : '☰'}
-          </button>
-        )}
-        
-        {/* Cart Icon */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <button
-            onClick={() => setIsCartOpen(true)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#FEFCDA',
-              fontSize: '1.5rem',
-              cursor: 'pointer',
-              padding: '8px',
-              borderRadius: '50%',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            <img src={Cart} alt="Menu" style={{ width: '24px', height: '24px' }} />
-          </button>
-          {getCartCount() > 0 && (
-            <div style={{
-              position: 'absolute',
-              top: '-5px',
-              right: '-5px',
-              backgroundColor: '#C72A01',
-              color: 'white',
-              borderRadius: '50%',
-              width: '20px',
-              height: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '0.8rem',
-              fontWeight: 'bold'
-            }}>
-              {getCartCount()}
+        {/* Right Side Actions */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            
+            {/* Desktop User Info & Logout */}
+            {!isMobileViewport && user && (
+                <div className="hidden md:flex items-center gap-4">
+                    <span className="text-[#FEFCDA] text-sm opacity-80">{user.email?.split('@')[0]}</span>
+                    <button
+                        onClick={handleLogout}
+                        className="text-[#FEFCDA] hover:text-red-400 transition-colors text-sm font-bold"
+                    >
+                        Logout
+                    </button>
+                </div>
+            )}
+
+            {/* Cart Icon */}
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <button
+                onClick={() => setIsCartOpen(true)}
+                style={{
+                background: 'none',
+                border: 'none',
+                color: '#FEFCDA',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                padding: '8px',
+                borderRadius: '50%',
+                transition: 'all 0.3s ease'
+                }}
+            >
+                <img src={Cart} alt="Menu" style={{ width: '24px', height: '24px' }} />
+            </button>
+            {getCartCount() > 0 && (
+                <div style={{
+                position: 'absolute',
+                top: '-5px',
+                right: '-5px',
+                backgroundColor: '#C72A01',
+                color: 'white',
+                borderRadius: '50%',
+                width: '20px',
+                height: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.8rem',
+                fontWeight: 'bold'
+                }}>
+                {getCartCount()}
+                </div>
+            )}
             </div>
-          )}
+
+            {/* Mobile Menu Button */}
+            {isMobileViewport && (
+            <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                style={{
+                background: 'none',
+                border: 'none',
+                color: '#FEFCDA',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                padding: '8px',
+                borderRadius: '50%',
+                transition: 'all 0.3s ease',
+                zIndex: 60
+                }}
+            >
+                {isMobileMenuOpen ? '✕' : '☰'}
+            </button>
+            )}
         </div>
       </div>
 
@@ -218,17 +244,54 @@ function Navbar() {
             top: '100%',
             left: 0,
             right: 0,
-            backgroundColor: 'rgba(112, 79, 36, 0.95)',
-            backdropFilter: 'blur(10px)',
+            backgroundColor: 'rgba(112, 79, 36, 0.98)',
+            backdropFilter: 'blur(15px)',
             borderBottom: '2px solid rgba(199, 42, 1, 0.95)',
             padding: '20px',
-            animation: 'slideDown 0.3s ease-out'
+            animation: 'slideDown 0.3s ease-out',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px'
           }}
         >
+          {/* User Profile Section for Mobile */}
+          {user && (
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                paddingBottom: '15px',
+                borderBottom: '1px solid rgba(254, 252, 218, 0.2)'
+            }}>
+                <div style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    backgroundColor: '#C72A01',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#FEFCDA',
+                    fontWeight: 'bold',
+                    fontSize: '1.2rem'
+                }}>
+                    {user.email?.charAt(0).toUpperCase()}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ color: '#FEFCDA', fontWeight: 'bold', fontSize: '1rem' }}>
+                        {user.user_metadata?.full_name || 'User'}
+                    </span>
+                    <span style={{ color: '#FEFCDA', opacity: 0.7, fontSize: '0.85rem' }}>
+                        {user.email}
+                    </span>
+                </div>
+            </div>
+          )}
+
           <ul style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '20px',
+            gap: '15px',
             listStyle: 'none',
             margin: 0,
             padding: 0
@@ -250,9 +313,11 @@ function Navbar() {
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.opacity = '0.7'
+                    e.target.style.paddingLeft = '10px'
                   }}
                   onMouseLeave={(e) => {
                     e.target.style.opacity = '1'
+                    e.target.style.paddingLeft = '0'
                   }}
                 >
                   {link.text}
@@ -260,14 +325,33 @@ function Navbar() {
               </li>
             ))}
           </ul>
+
+          {/* Mobile Logout Button */}
+          <button
+            onClick={handleLogout}
+            style={{
+                marginTop: '10px',
+                width: '100%',
+                padding: '12px',
+                backgroundColor: 'rgba(199, 42, 1, 0.2)',
+                border: '1px solid #C72A01',
+                borderRadius: '8px',
+                color: '#FEFCDA',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#C72A01'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(199, 42, 1, 0.2)'}
+          >
+            <span>Sign Out</span>
+          </button>
         </div>
       )}
-     <button
-        onClick={handleLogout}
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg"
-      >
-        Logout
-      </button>
     </nav>
   )
 }
