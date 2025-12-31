@@ -99,7 +99,7 @@ function Navbar() {
   return (
     <nav 
       ref={navbarRef}
-      className={`fixed top-0 left-0 right-0 z-50 bg-[#64351f] backdrop-blur-xl transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[999] bg-[#64351f] backdrop-blur-xl transition-all duration-300 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
       style={{ 
@@ -120,6 +120,26 @@ function Navbar() {
           justifyContent: 'space-between'
         }}
       >
+        {/* Mobile Menu Button - Moved to Left */}
+        {isMobileViewport && (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#FEFCDA',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              padding: '8px',
+              borderRadius: '50%',
+              transition: 'all 0.3s ease',
+              zIndex: 60
+            }}
+          >
+            {isMobileMenuOpen ? '✕' : '☰'}
+          </button>
+        )}
+
         {/* Desktop Navigation */}
         <ul 
           className="hidden md:flex text-[#FEFCDA] font-bold font-['slabo']"
@@ -212,26 +232,6 @@ function Navbar() {
                 </div>
             )}
             </div>
-
-            {/* Mobile Menu Button */}
-            {isMobileViewport && (
-            <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                style={{
-                background: 'none',
-                border: 'none',
-                color: '#FEFCDA',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-                padding: '8px',
-                borderRadius: '50%',
-                transition: 'all 0.3s ease',
-                zIndex: 60
-                }}
-            >
-                {isMobileMenuOpen ? '✕' : '☰'}
-            </button>
-            )}
         </div>
       </div>
 
